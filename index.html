@@ -3,81 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام إدارة الدعم الفني والطوارئ التقنية بالمستشفى</title>
+    <title>بوابة التشخيص التقني الذاتي للمنشآت الصحية</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; text-align: center; }
-        .chat-container { max-width: 550px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid #007bff; }
-        h2 { color: #007bff; margin-bottom: 5px; }
-        .sub-title { color: #6c757d; font-size: 14px; margin-bottom: 20px; }
-        .btn { display: block; width: 100%; padding: 14px; margin: 10px 0; background-color: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; text-align: right; transition: 0.2s; }
-        .btn:hover { background-color: #0056b3; }
-        .btn-emergency { background-color: #dc3545; font-weight: bold; text-align: center; }
-        .btn-emergency:hover { background-color: #bd2130; }
-        .result-box { display: none; background: #e9ecef; padding: 18px; border-radius: 6px; margin-top: 20px; text-align: right; line-height: 1.7; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
-        .back-btn { background-color: #6c757d; text-align: center; }
-        .back-btn:hover { background-color: #5a6268; }
-        .security-banner { background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 12px; border-radius: 6px; margin-top: 25px; font-size: 13px; text-align: right; line-height: 1.5; }
+        :root { --primary: #0f4c81; --secondary: #1d70b8; --success: #28a745; --danger: #dc3545; --bg: #f4f7f9; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 15px; color: #333; }
+        .app-container { max-width: 600px; margin: auto; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); overflow: hidden; }
+        .header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 25px 20px; text-align: right; position: relative; }
+        .header h1 { margin: 0; font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .header p { margin: 5px 0 0 0; font-size: 13px; opacity: 0.9; }
+        .system-status { display: flex; justify-content: space-between; background: #e3f2fd; padding: 10px 15px; font-size: 12px; color: var(--primary); font-weight: bold; border-bottom: 1px solid #d0e3ff; }
+        .status-dot { display: inline-block; width: 8px; height: 8px; background: var(--success); border-radius: 50%; margin-left: 5px; }
+        .main-content { padding: 25px 20px; text-align: right; }
+        .search-section { margin-bottom: 25px; }
+        .search-box { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; box-sizing: border-box; outline: none; transition: 0.3s; text-align: right; }
+        .search-box:focus { border-color: var(--secondary); box-shadow: 0 0 8px rgba(29,112,184,0.15); }
+        .quick-tags { margin-top: 10px; font-size: 12px; color: #666; }
+        .tag { display: inline-block; background: #eee; padding: 5px 10px; border-radius: 20px; margin: 3px; cursor: pointer; transition: 0.2s; }
+        .tag:hover { background: var(--secondary); color: white; }
+        .interactive-card { background: #f8f9fa; border: 1px solid #eaeaea; border-radius: 12px; padding: 20px; margin-top: 15px; display: none; }
+        .step-title { font-weight: bold; color: var(--primary); font-size: 16px; margin-bottom: 10px; border-bottom: 2px solid #eef2f5; padding-bottom: 8px; }
+        .step-instruction { font-size: 15px; line-height: 1.6; color: #444; margin-bottom: 20px; }
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s; text-align: center; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-next { background: var(--secondary); color: white; }
+        .btn-reset { background: #6c757d; color: white; width: 100%; margin-top: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #555; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        .compliance-footer { background: #fff9e6; padding: 15px; font-size: 12px; color: #7d6300; border-top: 1px solid #fbe6a2; text-align: right; line-height: 1.5; }
     </style>
 </head>
 <body>
 
-<div class="chat-container">
-    <h2>🏥 نظام المساعد التقني الذكي والطوارئ</h2>
-    <div class="sub-title">المنصة الموحدة لأتمتة الدعم الفني وضمان استمرارية الرعاية الصحية</div>
-    
-    <div id="options">
-        <!-- الميزة الحصرية: نظام الطوارئ للأقسام الحرجة -->
-        <button class="btn btn-emergency" onclick="showSolution('emergency')">🚨 استدعاء طارئ (غرف العمليات / العناية / الطوارئ)</button>
-        
-        <button class="btn" onclick="showSolution('printer')">🖨️ عطل أو تعليق طابعة الوصفات الطبية بالعيادات</button>
-        <button class="btn" onclick="showSolution('password')">🔑 نسيان كلمة مرور نظام الملفات الطبية (HIS)</button>
-        <button class="btn" onclick="showSolution('slow-pc')">💻 بطء وثقل جهاز الكمبيوتر المحطة الطبية</button>
-        <button class="btn" onclick="showSolution('preventive')">📅 جدولة صيانة وقائية لأجهزة القسم (تجنب الأعطال)</button>
+<div class="app-container">
+    <!-- بنر الحالة التشغيلية للمستشفى -->
+    <div class="system-status">
+        <div><span class="status-dot"></span>خوادم الملفات الطبية (HIS): تعمل بكفاءة</div>
+        <div>شبكة الطوارئ: مستقرة</div>
     </div>
 
-    <div id="solution" class="result-box">
-        <div id="solution-text"></div>
-        <button class="btn back-btn" onclick="goBack()">الرجوع للقائمة الرئيسية</button>
+    <!-- الهيدر الاحترافي الجديد -->
+    <div class="header">
+        <h1>🏥 بوابة التشخيص والدعم التقني الذاتي</h1>
+        <p>نظام التوجيه التفاعلي الذكي لضمان استمرارية أجهزة الرعاية الصحية</p>
     </div>
 
-    <!-- الميزة الحصرية: بنر التوعية بأمن معلومات المرضى والالتزام لمعايير سباهي -->
-    <div class="security-banner">
-        <strong>🔒 إرشادات الأمن السيبراني والالتزام (معايير سباهي):</strong><br>
-        <span id="security-tip">تأكد دائماً من قفل الشاشة (Windows + L) عند مغادرة العيادة لمنع الوصول غير المصرح به للملفات الطبية الخاصة بالمرضى.</span>
+    <div class="main-content">
+        <!-- واجهة الدخول المميزة: البحث الذكي ومحاكاة الذكاء الاصطناعي -->
+        <div id="welcome-screen">
+            <div class="search-section">
+                <h3 style="margin-top:0; color: var(--primary);">ما هي المشكلة التشغيلية التي تواجهها حالياً؟</h3>
+                <input type="text" id="search-input" class="search-box" placeholder="اكتب كلمتين عن المشكلة (مثلاً: طابعة، جهاز بطيء)..." oninput="handleSearch()">
+                <div class="quick-tags">
+                    <strong>أكثر المشاكل شيوعاً:</strong><br>
+                    <span class="tag" onclick="selectIssue('slow_pc')">💻 المحطة الطبية ثقيلة جداً</span>
+                    <span class="tag" onclick="selectIssue('printer')">🖨️ تعليق طابعة الوصفات</span>
+                    <span class="tag" onclick="selectIssue('password')">🔑 قفل حساب الملفات الطبية</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- منصة التشخيص التفاعلية خطوة بخطوة -->
+        <div id="diagnostic-portal" class="interactive-card">
+            <div id="portal-content"></div>
+        </div>
+    </div>
+
+    <!-- بنر الالتزام بمعايير سباهي والمحافظة على خصوصية المريض -->
+    <div class="compliance-footer">
+        <strong>🔒 الالتزام السيبراني للمنشآت الصحية (معايير سباهي):</strong><br>
+        يُحظر تماماً مشاركة الحسابات الرقمية الطبية. استخدامك لهذا النظام موثق برقم المحطة لضمان سلامة بيانات المرضى.
     </div>
 </div>
 
 <script>
-    const solutions = {
-        'emergency': '<span style="color: #dc3545; font-weight: bold;">⚠️ خطة الاستجابة الفورية للأقسام الحيوية:</span><br>تم استلام بلاغ الطوارئ الخاص بالقسم الحرج بنجاح. <br>1. تم إرسال تنبيه فوري عبر إشعار SMS مباشر إلى أقرب فني متواجد بالمنطقة الحرة.<br>2. تم رفع أولوية التذكرة في النظام إلى (Critical - Level 1).<br>3. سيصلك الفني خلال <strong>أقل من 5 دقائق</strong>. يرجى إبقاء خط الجوال متاحاً.',
-        'printer': '<strong>💡 الحل الذاتي لطابعات العيادات:</strong><br>1. تأكد من توصيل أسلاك الطاقة والـ USB بالكمبيوتر الخاص بالعيادة.<br>2. قم بإطفاء الطابعة وتشغيلها مجدداً لإعادة تنشيط الذاكرة الداخلية.<br>3. اذهب إلى إعدادات الطابعات واضغط بالزر الأيمن ثم اختر (Cancel All Documents) لإلغاء الأوامر الطبية العالقة.',
-        'password': '<strong>💡 استعادة الوصول لنظام المستشفى (HIS):</strong><br>1. تأكد من إغلاق زر Caps Lock في لوحة المفاتيح والتحويل للغة الإنجليزية.<br>2. استخدم رابط "تفعيل الحساب الذاتي" أسفل شاشة الدخول للنظام الموحد.<br>3. إذا تكرر القفل، سيقوم النظام تلقائياً بإعادة التعيين عبر إرسال كود التحقق لجوالك المسجل بملف الموارد البشرية.',
-        'slow-pc': '<strong>💡 تسريع أجهزة المحطات الطبية:</strong><br>1. أغلق المتصفحات وعلامات التبويب الزائدة لملفات المرضى غير المستخدمة.<br>2. اضغط على (Windows + R) واكتب الأمر <code>%temp%</code> ثم امسح كافة الملفات المؤقتة لتفريغ المساحة.<br>3. قم بعمل إعادة تشغيل (Restart) للجهاز لتنظيف الذاكرة العشوائية (RAM) وتحسين الأداء.',
-        'preventive': '<strong>📅 نظام الجدولة الوقائية (Preventive Maintenance):</strong><br>1. يتيح لك هذا القسم طلب فحص دوري للأجهزة قبل حدوث العطل الفعلي.<br>2. يرجى اختيار تاريخ مناسب (خارج أوقات ذروة العيادات الخارجية).<br>3. سيقوم فريق تقنية المعلومات بزيارة قسمكم لتنظيف الأجهزة داخلياً وتحديث الأنظمة لضمان عدم تعطل سير العمل.'
+    let currentIssue = '';
+    let currentStep = 0;
+
+    const database = {
+        'slow_pc': {
+            title: "💻 تشخيص بطء وثقل المحطة الطبية",
+            steps: [
+                "<strong>الخطوة 1 من 3 (تفريغ الذاكرة المؤقتة):</strong><br>اضغط على زر (Windows + R) في لوحة التحكم، واكتب الأمر <code>%temp%</code> ثم اضغط Enter. قم بتحديد ومسح كافة الملفات الظاهرة لتفريغ مساحة القرص الحيوية.",
+                "<strong>الخطوة 2 من 3 (إغلاق الجلسات العالقة):</strong><br>قم بإغلاق علامات التبويب الزائدة لملفات المرضى القديمة في المتصفح، حيث تتسبب الجلسات المتعددة غير النشطة في استهلاك ذاكرة الجهاز (RAM).",
+                "<strong>الخطوة 3 من 3 (تنشيط العتاد):</strong><br>أعد تشغيل الجهاز بالكامل (Restart). هذه الخطوة تقوم بإعادة ضبط معالج المحطة الطبية وتفريغ التخزين العشوائي المتراكم خلال النوبة."
+            ]
+        },
+        'printer': {
+            title: "🖨️ تشخيص أعطال طابعات الوصفات والتقارير",
+            steps: [
+                "<strong>الخطوة 1 من 3 (التحقق من التوصيل المادي):</strong><br>تأكد من أن كابل الـ USB الأسود متصل مباشرة بالمحطة، وأن طاقة الطابعة تعمل والضوء الأخضر مستقر (وليس أحمر أو وامض).",
+                "<strong>الخطوة 2 من 3 (تنظيف مخزن الأوامر العالقة):</strong><br>اذهب إلى (Devices and Printers) من قائمة ابدأ، اضغط بالزر الأيمن على طابعة العيادة، واختر (Cancel All Documents) لإلغاء الملفات الطبية المتراكمة التي تسببت في تعليق الطابعة.",
+                "<strong>الخطوة 3 من 3 (إعادة تشغيل خدمة الطباعة الرقمية):</strong><br>أطفئ الطابعة من زر الطاقة تماماً، انتظر 10 ثوانٍ، ثم أعد تشغيلها لتجبر النظام على إعادة التعرف على المنفذ الرقمي المتصل."
+            ]
+        },
+        'password': {
+            title: "🔑 استعادة الوصول المقفل لنظام المستشفى (HIS)",
+            steps: [
+                "<strong>الخطوة 1 de 2 (التحقق من لوحة المفاتيح):</strong><br>تأكد من أن لغة الكتابة هي الإنجليزية وأن زر الحروف الكبيرة (Caps Lock) غير نشط لتفادي إدخال الرموز بشكل خاطئ وقفل الحساب التشغيلي.",
+                "<strong>الخطوة 2 de 2 (التحديث الذاتي السريع):</strong><br>اضغط على زر 'إعادة تعيين كلمة المرور تلقائياً' أسفل شاشة النظام الصحي، وسيصلك كود تفعيل فوري على جوالك المعتمد بالموارد البشرية لتحديث الرمز خلال دقيقة."
+            ]
+        }
     };
 
-    const tips = [
-        "تأكد دائماً من قفل الشاشة (Windows + L) عند مغادرة العيادة لمنع الوصول غير المصرح به للملفات الطبية.",
-        "يُمنع مشاركة كلمة المرور الخاصة بنظام المستشفى مع أي زميل آخر؛ كل موظف مسؤول عن العمليات المنفذة بحسابه.",
-        "إذا لاحظت أي بريد إلكتروني مجهول يطلب بيانات المرضى أو تحديث كلمات المرور، أبلغ قسم تقنية المعلومات فوراً ولا تفتح الروابط."
-    ];
-
-    // تغيير نصيحة الأمن السيبراني بشكل عشوائي عند كل دخول للموقع لإضافة تفاعلية متميزة
-    document.getElementById('security-tip').innerText = tips[Math.floor(Math.random() * tips.length)];
-
-    function showSolution(key) {
-        document.getElementById('options').style.display = 'none';
-        const solutionBox = document.getElementById('solution');
-        document.getElementById('solution-text').innerHTML = solutions[key];
-        solutionBox.style.display = 'block';
+    function handleSearch() {
+        const val = document.getElementById('search-input').value.toLowerCase();
+        if(val.includes('طابع') || val.includes('print')) selectIssue('printer');
+        else if(val.includes('بطي') || val.includes('ثقي') || val.includes('جهاز')) selectIssue('slow_pc');
+        else if(val.includes('كلم') || val.includes('حساب') || val.includes('رقم')) selectIssue('password');
     }
 
-    function goBack() {
-        document.getElementById('solution').style.display = 'none';
-        document.getElementById('options').style.display = 'block';
-        document.getElementById('security-tip').innerText = tips[Math.floor(Math.random() * tips.length)];
+    function selectIssue(issueKey) {
+        currentIssue = issueKey;
+        currentStep = 0;
+        document.getElementById('welcome-screen').style.display = 'none';
+        document.getElementById('diagnostic-portal').style.display = 'block';
+        renderStep();
     }
-</script>
 
-</body>
-</html>
+    function renderStep() {
+        const issue = database[currentIssue];
+        const portal = document.getElementById('portal-content');
+        
+        if (currentStep < issue.steps.length) {
+            portal.innerHTML = `
+                <div class="step-title">${issue.title}</div>
+                <div class="step-instruction">${issue.steps[currentStep]}</div>
+                <p style="font-size:13px; color:#555; font-weight:bold;">هل نجحت هذه الخطوة في حل المشكلة الميدانية؟</p>
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="issueResolved()">✅ نعم، تم الحل</button>
+                    <button class="btn btn-danger" onclick="nextStep()">❌ لا، انتقل للخطوة التالية</button>
+                </div>
+            `;
+        } else {
+            // الميزة الذهبية: إذا لم تنجح كل الخطوات، يستدعي الدعم الفني بشكل رسمي وتفصيلي
+            portal.innerHTML = `
+                <div class="step-title" style="color:var(--danger);">⚠️ خطة التصعيد الآلي وقفل الحل الذاتي</div>
+                <div class="step-instruction">لقد قمت بتطبيق كافة خطوات التشخيص الذاتي المعتمدة ولم يتم حل العطل. يتطلب الأمر الآن تدخل مهندس الدعم الفني للموقع فوراً.</div>
+                
+                <div class="form-group">
+                    <label>اسم القسم / العيادة المعتمدة:</label>
+                    <input type="text" id="dept-name" class="form-control" placeholder="مثال: العيادات الخارجية - عيادة 4">
+                </div>
+                <div class="form-group">
+                    <label>الرقم الوظيفي أو الجوال للتواصل:</label>
+                    <input type="text" id="staff-phone" class="form-control" placeholder="05xxxxxxxx">
+                </div>
