@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -18,9 +17,9 @@
         .search-section { margin-bottom: 25px; }
         .search-box { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 15px; box-sizing: border-box; outline: none; transition: 0.3s; text-align: right; }
         .search-box:focus { border-color: var(--secondary); box-shadow: 0 0 8px rgba(29,112,184,0.15); }
-        .quick-tags { margin-top: 10px; font-size: 12px; color: #666; }
-        .tag { display: inline-block; background: #eee; padding: 5px 10px; border-radius: 20px; margin: 3px; cursor: pointer; transition: 0.2s; }
-        .tag:hover { background: var(--secondary); color: white; }
+        .quick-tags { margin-top: 15px; font-size: 13px; color: #666; }
+        .tag-btn { display: block; width: 100%; padding: 14px; margin: 10px 0; background-color: #e3f2fd; color: var(--primary); border: 1px solid #b3d7ff; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: bold; text-align: right; transition: 0.2s; }
+        .tag-btn:hover { background-color: var(--secondary); color: white; }
         .interactive-card { background: #f8f9fa; border: 1px solid #eaeaea; border-radius: 12px; padding: 20px; margin-top: 15px; display: none; }
         .step-title { font-weight: bold; color: var(--primary); font-size: 16px; margin-bottom: 10px; border-bottom: 2px solid #eef2f5; padding-bottom: 8px; }
         .step-instruction { font-size: 15px; line-height: 1.6; color: #444; margin-bottom: 20px; }
@@ -28,7 +27,6 @@
         .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s; text-align: center; }
         .btn-success { background: var(--success); color: white; }
         .btn-danger { background: var(--danger); color: white; }
-        .btn-next { background: var(--secondary); color: white; }
         .btn-reset { background: #6c757d; color: white; width: 100%; margin-top: 15px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #555; }
@@ -39,40 +37,36 @@
 <body>
 
 <div class="app-container">
-    <!-- بنر الحالة التشغيلية للمستشفى -->
     <div class="system-status">
         <div><span class="status-dot"></span>خوادم الملفات الطبية (HIS): تعمل بكفاءة</div>
         <div>شبكة الطوارئ: مستقرة</div>
     </div>
 
-    <!-- الهيدر الاحترافي الجديد -->
     <div class="header">
         <h1>🏥 بوابة التشخيص والدعم التقني الذاتي</h1>
         <p>نظام التوجيه التفاعلي الذكي لضمان استمرارية أجهزة الرعاية الصحية</p>
     </div>
 
     <div class="main-content">
-        <!-- واجهة الدخول المميزة: البحث الذكي ومحاكاة الذكاء الاصطناعي -->
         <div id="welcome-screen">
             <div class="search-section">
                 <h3 style="margin-top:0; color: var(--primary);">ما هي المشكلة التشغيلية التي تواجهها حالياً؟</h3>
-                <input type="text" id="search-input" class="search-box" placeholder="اكتب كلمتين عن المشكلة (مثلاً: طابعة، جهاز بطيء)..." oninput="handleSearch()">
-                <div class="quick-tags">
-                    <strong>أكثر المشاكل شيوعاً:</strong><br>
-                    <span class="tag" onclick="selectIssue('slow_pc')">💻 المحطة الطبية ثقيلة جداً</span>
-                    <span class="tag" onclick="selectIssue('printer')">🖨️ تعليق طابعة الوصفات</span>
-                    <span class="tag" onclick="selectIssue('password')">🔑 قفل حساب الملفات الطبية</span>
+                <input type="text" id="search-input" class="search-box" placeholder="اكتب للبحث عن مشكلة (مثلاً: طابعة، بطيء)..." oninput="handleSearch()">
+                
+                <div class="quick-tags" id="tags-container">
+                    <strong>اختر المشكلة لبدء التشخيص التفصيلي:</strong>
+                    <button class="tag-btn" id="btn-slow" onclick="selectIssue('slow_pc')">💻 المحطة الطبية ثقيلة وبطيئة جداً</button>
+                    <button class="tag-btn" id="btn-print" onclick="selectIssue('printer')">🖨️ تعليق أو عطل طابعة الوصفات بالعيادة</button>
+                    <button class="tag-btn" id="btn-pass" onclick="selectIssue('password')">🔑 قفل حساب نظام الملفات الطبية (HIS)</button>
                 </div>
             </div>
         </div>
 
-        <!-- منصة التشخيص التفاعلية خطوة بخطوة -->
         <div id="diagnostic-portal" class="interactive-card">
             <div id="portal-content"></div>
         </div>
     </div>
 
-    <!-- بنر الالتزام بمعايير سباهي والمحافظة على خصوصية المريض -->
     <div class="compliance-footer">
         <strong>🔒 الالتزام السيبراني للمنشآت الصحية (معايير سباهي):</strong><br>
         يُحظر تماماً مشاركة الحسابات الرقمية الطبية. استخدامك لهذا النظام موثق برقم المحطة لضمان سلامة بيانات المرضى.
@@ -87,33 +81,33 @@
         'slow_pc': {
             title: "💻 تشخيص بطء وثقل المحطة الطبية",
             steps: [
-                "<strong>الخطوة 1 من 3 (تفريغ الذاكرة المؤقتة):</strong><br>اضغط على زر (Windows + R) في لوحة التحكم، واكتب الأمر <code>%temp%</code> ثم اضغط Enter. قم بتحديد ومسح كافة الملفات الظاهرة لتفريغ مساحة القرص الحيوية.",
-                "<strong>الخطوة 2 من 3 (إغلاق الجلسات العالقة):</strong><br>قم بإغلاق علامات التبويب الزائدة لملفات المرضى القديمة في المتصفح، حيث تتسبب الجلسات المتعددة غير النشطة في استهلاك ذاكرة الجهاز (RAM).",
-                "<strong>الخطوة 3 من 3 (تنشيط العتاد):</strong><br>أعد تشغيل الجهاز بالكامل (Restart). هذه الخطوة تقوم بإعادة ضبط معالج المحطة الطبية وتفريغ التخزين العشوائي المتراكم خلال النوبة."
+                "<strong>الخطوة 1 من 3 (تفريغ الذاكرة المؤقتة للوندوز):</strong><br>اضغط على زر (Windows + R) في لوحة المفاتيح، واكتب الأمر <code>%temp%</code> ثم اضغط Enter. قم بتحديد ومسح كافة الملفات الظاهرة لتفريغ مساحة القرص الحيوية وتسريع النظام الرئيسي.",
+                "<strong>الخطوة 2 من 3 (إغلاق الجلسات الطبية العالقة):</strong><br>قم بإغلاق علامات التبويب الزائدة لملفات المرضى القديمة في المتصفح، حيث تتسبب الجلسات المتعددة المفتوحة وغير النشطة في استهلاك ذاكرة الجهاز (RAM) وإبطاء المعالج.",
+                "<strong>الخطوة 3 من 3 (تنشيط العتاد والمحطة):</strong><br>أعد تشغيل الجهاز بالكامل (Restart). هذه الخطوة تقوم بإعادة ضبط معالج المحطة الطبية وتفريغ التخزين العشوائي المتراكم خلال النوبة لتستعيد سرعتها الكاملة."
             ]
         },
         'printer': {
             title: "🖨️ تشخيص أعطال طابعات الوصفات والتقارير",
             steps: [
-                "<strong>الخطوة 1 من 3 (التحقق من التوصيل المادي):</strong><br>تأكد من أن كابل الـ USB الأسود متصل مباشرة بالمحطة، وأن طاقة الطابعة تعمل والضوء الأخضر مستقر (وليس أحمر أو وامض).",
-                "<strong>الخطوة 2 من 3 (تنظيف مخزن الأوامر العالقة):</strong><br>اذهب إلى (Devices and Printers) من قائمة ابدأ، اضغط بالزر الأيمن على طابعة العيادة، واختر (Cancel All Documents) لإلغاء الملفات الطبية المتراكمة التي تسببت في تعليق الطابعة.",
-                "<strong>الخطوة 3 من 3 (إعادة تشغيل خدمة الطباعة الرقمية):</strong><br>أطفئ الطابعة من زر الطاقة تماماً، انتظر 10 ثوانٍ، ثم أعد تشغيلها لتجبر النظام على إعادة التعرف على المنفذ الرقمي المتصل."
+                "<strong>الخطوة 1 من 3 (التحقق من التوصيل المادي):</strong><br>تأكد من أن كابل الـ USB الأسود متصل مباشرة بالمحطة، وأن طاقة الطابعة تعمل والضوء الأخضر مستقر (وليس أحمر أو وامض) وتحتوي على أوراق الوصفات الكافية.",
+                "<strong>الخطوة 2 من 3 (تنظيف مخزن الأوامر الطبية العالقة):</strong><br>اذهب إلى (Devices and Printers) من قائمة ابدأ، اضغط بالزر الأيمن على طابعة العيادة، واختر (Cancel All Documents) لإلغاء الملفات الطبية المتراكمة التي تسببت في تعليق الطابعة.",
+                "<strong>الخطوة 3 من 3 (إعادة تشغيل خدمة الطباعة الرقمية):</strong><br>أطفئ الطابعة من زر الطاقة تماماً، انتظر 10 ثوانٍ، ثم أعد تشغيلها لتجبر نظام الوندوز على إعادة التعرف على المنفذ الرقمي المتصل وضخ أوامر الطباعة الجديدة."
             ]
         },
         'password': {
             title: "🔑 استعادة الوصول المقفل لنظام المستشفى (HIS)",
             steps: [
-                "<strong>الخطوة 1 de 2 (التحقق من لوحة المفاتيح):</strong><br>تأكد من أن لغة الكتابة هي الإنجليزية وأن زر الحروف الكبيرة (Caps Lock) غير نشط لتفادي إدخال الرموز بشكل خاطئ وقفل الحساب التشغيلي.",
-                "<strong>الخطوة 2 de 2 (التحديث الذاتي السريع):</strong><br>اضغط على زر 'إعادة تعيين كلمة المرور تلقائياً' أسفل شاشة النظام الصحي، وسيصلك كود تفعيل فوري على جوالك المعتمد بالموارد البشرية لتحديث الرمز خلال دقيقة."
+                "<strong>الخطوة 1 من 2 (التحقق من لوحة المفاتيح):</strong><br>تأكد من أن لغة الكتابة هي الإنجليزية وأن زر الحروف الكبيرة (Caps Lock) غير نشط لتفادي إدخال الرموز بشكل خاطئ وقفل الحساب التشغيلي للمرة الثانية.",
+                "<strong>الخطوة 2 من 2 (التحديث الذاتي السريع وبوابة التحقق):</strong><br>اضغط على زر 'إعادة تعيين كلمة المرور تلقائياً' أسفل شاشة النظام الصحي، وسيصلك كود تفعيل فوري عبر رسالة SMS على جوالك المعتمد بالموارد البشرية لتحديث الرمز خلال دقيقة بدون انتظار الفني."
             ]
         }
     };
 
     function handleSearch() {
         const val = document.getElementById('search-input').value.toLowerCase();
-        if(val.includes('طابع') || val.includes('print')) selectIssue('printer');
-        else if(val.includes('بطي') || val.includes('ثقي') || val.includes('جهاز')) selectIssue('slow_pc');
-        else if(val.includes('كلم') || val.includes('حساب') || val.includes('رقم')) selectIssue('password');
+        document.getElementById('btn-print').style.display = (val.includes('طابع') || val.includes('print') || val === '') ? 'block' : 'none';
+        document.getElementById('btn-slow').style.display = (val.includes('بطي') || val.includes('ثقي') || val.includes('جهاز') || val.includes('كمبيو') || val === '') ? 'block' : 'none';
+        document.getElementById('btn-pass').style.display = (val.includes('كلم') || val.includes('حساب') || val.includes('رقم') || val.includes('باسور') || val === '') ? 'block' : 'none';
     }
 
     function selectIssue(issueKey) {
@@ -132,23 +126,16 @@
             portal.innerHTML = `
                 <div class="step-title">${issue.title}</div>
                 <div class="step-instruction">${issue.steps[currentStep]}</div>
-                <p style="font-size:13px; color:#555; font-weight:bold;">هل نجحت هذه الخطوة في حل المشكلة الميدانية؟</p>
+                <p style="font-size:14px; color:#c01e1e; font-weight:bold; margin-top:20px;">هل نجحت هذه الخطوة في حل المشكلة الميدانية بالعيادة؟</p>
                 <div class="action-buttons">
-                    <button class="btn btn-success" onclick="issueResolved()">✅ نعم، تم الحل</button>
-                    <button class="btn btn-danger" onclick="nextStep()">❌ لا، انتقل للخطوة التالية</button>
+                    <button class="btn btn-success" onclick="issueResolved()">✅ نعم، تم الحل واشتغل الجهاز</button>
+                    <button class="btn btn-danger" onclick="nextStep()">❌ لا، لم تنجح (الخطوة التالية)</button>
                 </div>
             `;
         } else {
-            // الميزة الذهبية: إذا لم تنجح كل الخطوات، يستدعي الدعم الفني بشكل رسمي وتفصيلي
             portal.innerHTML = `
-                <div class="step-title" style="color:var(--danger);">⚠️ خطة التصعيد الآلي وقفل الحل الذاتي</div>
-                <div class="step-instruction">لقد قمت بتطبيق كافة خطوات التشخيص الذاتي المعتمدة ولم يتم حل العطل. يتطلب الأمر الآن تدخل مهندس الدعم الفني للموقع فوراً.</div>
+                <div class="step-title" style="color:var(--danger);">⚠️ خطة التصعيد الآلي واستدعاء الدعم الفني</div>
+                <div class="step-instruction">لقد قمت بتطبيق كافة خطوات التشخيص الذاتي المعتمدة بدقة ولم يتم إنهاء العطل. يتطلب الأمر الآن تدخل مهندس الدعم الفني للموقع فوراً لتغيير قطع الغيار أو فحص الشبكة داخلياً.</div>
                 
                 <div class="form-group">
-                    <label>اسم القسم / العيادة المعتمدة:</label>
-                    <input type="text" id="dept-name" class="form-control" placeholder="مثال: العيادات الخارجية - عيادة 4">
-                </div>
-                <div class="form-group">
-                    <label>الرقم الوظيفي أو الجوال للتواصل:</label>
-                    <input type="text" id="staff-phone" class="form-control" placeholder="05xxxxxxxx">
-                </div>
+
