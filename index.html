@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساعد الدعم الفني الذكي بالمستشفى</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; text-align: center; }
+        .chat-container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #007bff; }
+        .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background-color: #0056b3; }
+        .result-box { display: none; background: #e9ecef; padding: 15px; border-radius: 5px; margin-top: 20px; text-align: right; line-height: 1.6; }
+        .back-btn { background-color: #6c757d; }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <h2>🏥 مساعد الدعم الفني الآلي</h2>
+    <p>مرحباً بك في نظام الحلول الذاتية السريعة. يرجى اختيار المشكلة التي تواجهك:</p>
+    
+    <div id="options">
+        <button class="btn" onclick="showSolution('printer')">🖨️ تعليق أو تعريف طابعة الوصفات</button>
+        <button class="btn" onclick="showSolution('password')">🔑 نسيان كلمة المرور / نظام المستشفى</button>
+        <button class="btn" onclick="showSolution('browser')">🌐 بطء المتصفح ونظام المواعيد</button>
+        <button class="btn" onclick="showSolution('slow-pc')">💻 جهاز الكمبيوتر ثقيل جداً</button>
+    </div>
+
+    <div id="solution" class="result-box">
+        <div id="solution-text"></div>
+        <button class="btn back-btn" onclick="goBack()">الرجوع للرئيسية</button>
+    </div>
+</div>
+
+<script>
+    const solutions = {
+        'printer': '<strong>💡 حل مشكلة الطابعة:</strong><br>1. تأكد من توصيل أسلاك الطاقة والـ USB بالكمبيوتر.<br>2. قم بإطفاء الطابعة وتشغيلها مجدداً لإعادة تنشيطها.<br>3. اذهب إلى إعدادات الطابعات واضغط بالزر الأيمن ثم اختر (Cancel All Documents) لإلغاء الأوامر العالقة.',
+        'password': '<strong>💡 حل مشكلة كلمة المرور:</strong><br>1. تأكد من أن زر Caps Lock مغلق في لوحة المفاتيح.<br>2. استخدم رابط "نسيت كلمة المرور" أسفل شاشة الدخول للنظام الأساسي.<br>3. إذا لم ينجح الأمر، يرجى تزويد قسم تقنية المعلومات برقمك الوظيفي لإعادة التعيين فوراً.',
+        'browser': '<strong>💡 حل بطء المتصفح ونظام المواعيد:</strong><br>1. اضغط على أزرار (Ctrl + Shift + Delete) معاً في لوحة المفاتيح.<br>2. قم بمسح الـ Cache وملفات تعريف الارتباط (Cookies).<br>3. أغلق المتصفح بالكامل وأعد فتحه، وتأكد من تحديثه لأحدث نسخة.',
+        'slow-pc': '<strong>💡 حل مشكلة الجهاز الثقيل وبطيء الحركة:</strong><br>1. أغلق جميع البرامج وعلامات التبويب الزائدة في المتصفح.<br>2. اضغط على زر (Windows + R) واكتب الأمر <code>%temp%</code> ثم امسح كافة الملفات المؤقتة الموجودة.<br>3. قم بعمل إعادة تشغيل (Restart) للجهاز لتفريغ ذاكرة الـ RAM بالكامل.'
+    };
+
+    function showSolution(key) {
+        document.getElementById('options').style.display = 'none';
+        const solutionBox = document.getElementById('solution');
+        document.getElementById('solution-text').innerHTML = solutions[key];
+        solutionBox.style.display = 'block';
+    }
+
+    function goBack() {
+        document.getElementById('solution').style.display = 'none';
+        document.getElementById('options').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
