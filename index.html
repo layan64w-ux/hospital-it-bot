@@ -3,43 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مساعد الدعم الفني الذكي بالمستشفى</title>
+    <title>نظام إدارة الدعم الفني والطوارئ التقنية بالمستشفى</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; text-align: center; }
-        .chat-container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        h2 { color: #007bff; }
-        .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; text-align: center; }
+        .chat-container { max-width: 550px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid #007bff; }
+        h2 { color: #007bff; margin-bottom: 5px; }
+        .sub-title { color: #6c757d; font-size: 14px; margin-bottom: 20px; }
+        .btn { display: block; width: 100%; padding: 14px; margin: 10px 0; background-color: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; text-align: right; transition: 0.2s; }
         .btn:hover { background-color: #0056b3; }
-        .result-box { display: none; background: #e9ecef; padding: 15px; border-radius: 5px; margin-top: 20px; text-align: right; line-height: 1.6; }
-        .back-btn { background-color: #6c757d; }
+        .btn-emergency { background-color: #dc3545; font-weight: bold; text-align: center; }
+        .btn-emergency:hover { background-color: #bd2130; }
+        .result-box { display: none; background: #e9ecef; padding: 18px; border-radius: 6px; margin-top: 20px; text-align: right; line-height: 1.7; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+        .back-btn { background-color: #6c757d; text-align: center; }
+        .back-btn:hover { background-color: #5a6268; }
+        .security-banner { background-color: #fff3cd; border: 1px solid #ffeeba; color: #856404; padding: 12px; border-radius: 6px; margin-top: 25px; font-size: 13px; text-align: right; line-height: 1.5; }
     </style>
 </head>
 <body>
 
 <div class="chat-container">
-    <h2>🏥 مساعد الدعم الفني الآلي</h2>
-    <p>مرحباً بك في نظام الحلول الذاتية السريعة. يرجى اختيار المشكلة التي تواجهك:</p>
+    <h2>🏥 نظام المساعد التقني الذكي والطوارئ</h2>
+    <div class="sub-title">المنصة الموحدة لأتمتة الدعم الفني وضمان استمرارية الرعاية الصحية</div>
     
     <div id="options">
-        <button class="btn" onclick="showSolution('printer')">🖨️ تعليق أو تعريف طابعة الوصفات</button>
-        <button class="btn" onclick="showSolution('password')">🔑 نسيان كلمة المرور / نظام المستشفى</button>
-        <button class="btn" onclick="showSolution('browser')">🌐 بطء المتصفح ونظام المواعيد</button>
-        <button class="btn" onclick="showSolution('slow-pc')">💻 جهاز الكمبيوتر ثقيل جداً</button>
+        <!-- الميزة الحصرية: نظام الطوارئ للأقسام الحرجة -->
+        <button class="btn btn-emergency" onclick="showSolution('emergency')">🚨 استدعاء طارئ (غرف العمليات / العناية / الطوارئ)</button>
+        
+        <button class="btn" onclick="showSolution('printer')">🖨️ عطل أو تعليق طابعة الوصفات الطبية بالعيادات</button>
+        <button class="btn" onclick="showSolution('password')">🔑 نسيان كلمة مرور نظام الملفات الطبية (HIS)</button>
+        <button class="btn" onclick="showSolution('slow-pc')">💻 بطء وثقل جهاز الكمبيوتر المحطة الطبية</button>
+        <button class="btn" onclick="showSolution('preventive')">📅 جدولة صيانة وقائية لأجهزة القسم (تجنب الأعطال)</button>
     </div>
 
     <div id="solution" class="result-box">
         <div id="solution-text"></div>
-        <button class="btn back-btn" onclick="goBack()">الرجوع للرئيسية</button>
+        <button class="btn back-btn" onclick="goBack()">الرجوع للقائمة الرئيسية</button>
+    </div>
+
+    <!-- الميزة الحصرية: بنر التوعية بأمن معلومات المرضى والالتزام لمعايير سباهي -->
+    <div class="security-banner">
+        <strong>🔒 إرشادات الأمن السيبراني والالتزام (معايير سباهي):</strong><br>
+        <span id="security-tip">تأكد دائماً من قفل الشاشة (Windows + L) عند مغادرة العيادة لمنع الوصول غير المصرح به للملفات الطبية الخاصة بالمرضى.</span>
     </div>
 </div>
 
 <script>
     const solutions = {
-        'printer': '<strong>💡 حل مشكلة الطابعة:</strong><br>1. تأكد من توصيل أسلاك الطاقة والـ USB بالكمبيوتر.<br>2. قم بإطفاء الطابعة وتشغيلها مجدداً لإعادة تنشيطها.<br>3. اذهب إلى إعدادات الطابعات واضغط بالزر الأيمن ثم اختر (Cancel All Documents) لإلغاء الأوامر العالقة.',
-        'password': '<strong>💡 حل مشكلة كلمة المرور:</strong><br>1. تأكد من أن زر Caps Lock مغلق في لوحة المفاتيح.<br>2. استخدم رابط "نسيت كلمة المرور" أسفل شاشة الدخول للنظام الأساسي.<br>3. إذا لم ينجح الأمر، يرجى تزويد قسم تقنية المعلومات برقمك الوظيفي لإعادة التعيين فوراً.',
-        'browser': '<strong>💡 حل بطء المتصفح ونظام المواعيد:</strong><br>1. اضغط على أزرار (Ctrl + Shift + Delete) معاً في لوحة المفاتيح.<br>2. قم بمسح الـ Cache وملفات تعريف الارتباط (Cookies).<br>3. أغلق المتصفح بالكامل وأعد فتحه، وتأكد من تحديثه لأحدث نسخة.',
-        'slow-pc': '<strong>💡 حل مشكلة الجهاز الثقيل وبطيء الحركة:</strong><br>1. أغلق جميع البرامج وعلامات التبويب الزائدة في المتصفح.<br>2. اضغط على زر (Windows + R) واكتب الأمر <code>%temp%</code> ثم امسح كافة الملفات المؤقتة الموجودة.<br>3. قم بعمل إعادة تشغيل (Restart) للجهاز لتفريغ ذاكرة الـ RAM بالكامل.'
+        'emergency': '<span style="color: #dc3545; font-weight: bold;">⚠️ خطة الاستجابة الفورية للأقسام الحيوية:</span><br>تم استلام بلاغ الطوارئ الخاص بالقسم الحرج بنجاح. <br>1. تم إرسال تنبيه فوري عبر إشعار SMS مباشر إلى أقرب فني متواجد بالمنطقة الحرة.<br>2. تم رفع أولوية التذكرة في النظام إلى (Critical - Level 1).<br>3. سيصلك الفني خلال <strong>أقل من 5 دقائق</strong>. يرجى إبقاء خط الجوال متاحاً.',
+        'printer': '<strong>💡 الحل الذاتي لطابعات العيادات:</strong><br>1. تأكد من توصيل أسلاك الطاقة والـ USB بالكمبيوتر الخاص بالعيادة.<br>2. قم بإطفاء الطابعة وتشغيلها مجدداً لإعادة تنشيط الذاكرة الداخلية.<br>3. اذهب إلى إعدادات الطابعات واضغط بالزر الأيمن ثم اختر (Cancel All Documents) لإلغاء الأوامر الطبية العالقة.',
+        'password': '<strong>💡 استعادة الوصول لنظام المستشفى (HIS):</strong><br>1. تأكد من إغلاق زر Caps Lock في لوحة المفاتيح والتحويل للغة الإنجليزية.<br>2. استخدم رابط "تفعيل الحساب الذاتي" أسفل شاشة الدخول للنظام الموحد.<br>3. إذا تكرر القفل، سيقوم النظام تلقائياً بإعادة التعيين عبر إرسال كود التحقق لجوالك المسجل بملف الموارد البشرية.',
+        'slow-pc': '<strong>💡 تسريع أجهزة المحطات الطبية:</strong><br>1. أغلق المتصفحات وعلامات التبويب الزائدة لملفات المرضى غير المستخدمة.<br>2. اضغط على (Windows + R) واكتب الأمر <code>%temp%</code> ثم امسح كافة الملفات المؤقتة لتفريغ المساحة.<br>3. قم بعمل إعادة تشغيل (Restart) للجهاز لتنظيف الذاكرة العشوائية (RAM) وتحسين الأداء.',
+        'preventive': '<strong>📅 نظام الجدولة الوقائية (Preventive Maintenance):</strong><br>1. يتيح لك هذا القسم طلب فحص دوري للأجهزة قبل حدوث العطل الفعلي.<br>2. يرجى اختيار تاريخ مناسب (خارج أوقات ذروة العيادات الخارجية).<br>3. سيقوم فريق تقنية المعلومات بزيارة قسمكم لتنظيف الأجهزة داخلياً وتحديث الأنظمة لضمان عدم تعطل سير العمل.'
     };
+
+    const tips = [
+        "تأكد دائماً من قفل الشاشة (Windows + L) عند مغادرة العيادة لمنع الوصول غير المصرح به للملفات الطبية.",
+        "يُمنع مشاركة كلمة المرور الخاصة بنظام المستشفى مع أي زميل آخر؛ كل موظف مسؤول عن العمليات المنفذة بحسابه.",
+        "إذا لاحظت أي بريد إلكتروني مجهول يطلب بيانات المرضى أو تحديث كلمات المرور، أبلغ قسم تقنية المعلومات فوراً ولا تفتح الروابط."
+    ];
+
+    // تغيير نصيحة الأمن السيبراني بشكل عشوائي عند كل دخول للموقع لإضافة تفاعلية متميزة
+    document.getElementById('security-tip').innerText = tips[Math.floor(Math.random() * tips.length)];
 
     function showSolution(key) {
         document.getElementById('options').style.display = 'none';
@@ -51,6 +75,7 @@
     function goBack() {
         document.getElementById('solution').style.display = 'none';
         document.getElementById('options').style.display = 'block';
+        document.getElementById('security-tip').innerText = tips[Math.floor(Math.random() * tips.length)];
     }
 </script>
 
